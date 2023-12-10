@@ -16,12 +16,16 @@ svg.attr("width", width)
 
 // Markers = CIRCLES
 var markers = [
-  { x: 200, y: 150, group: "A", size: 34 }, // Example position
+  { x: 110, y: 440, group: "Decha", size: 25 }, // Decha
   { x: 500, y: 535, group: "Kannika", size: 25 }, //Kannika
   { x: 465, y: 370, group: "Chai", size: 15 }, //Chai
   { x: 555, y: 320, group: "Busarakhan", size: 10 }, //Busarakhan 
   { x: 555, y: 250, group: "Kohsoom", size: 10 }, //Kohsoom 
   { x: 400, y: 160, group: "Boonsri", size: 10 }, //Boonsri
+  { x: 320, y: 260, group: "Achara", size: 10 }, //Achara 
+  { x: 250, y: 350, group: "Somchair", size: 10 }, //Somchair 
+  { x: 250, y: 510, group: "Tansanee", size: 10 }, // Sakda
+  { x: 400, y: 640, group: "Sakda", size: 10 }, //Sakda 
   // Add more circle positions as needed
 ];
 
@@ -33,8 +37,8 @@ d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/w
 
     // Create a color scale
     var color = d3.scaleOrdinal()
-      .domain(["A", "Kannika", "Chai", "Busarakhan", "Kohsoom", "Boonsri" ])
-      .range([ "#402D54", "#D18975", "#8FD175", "#FFEE8D", "#D175D1", "#D1A275"])
+      .domain(["Decha", "Kannika", "Chai", "Busarakhan", "Kohsoom", "Boonsri", "Achara", "Somchair", "Tansanee", "Sakda" ])
+      .range([ "#402D54", "#D18975", "#8FD175", "#FFEE8D", "#D175D1", "#D1A275", "#D1D175", "#D1758F", "#75D1D1", "#D1758F"])
 
     // Add a scale for bubble size
     var size = d3.scaleLinear()

@@ -11,22 +11,24 @@ var color = d3.scaleOrdinal()
 
 
 // Markers = CIRCLES
-var markers = [
-  { x: 110, y: 440, group: "Decha", size: 25 }, // Decha
-  { x: 500, y: 535, group: "Kannika", size: 25 }, //Kannika
-  { x: 465, y: 370, group: "Chai", size: 15 }, //Chai
-  { x: 555, y: 320, group: "Busarakhan", size: 10 }, //Busarakhan 
-  { x: 555, y: 250, group: "Kohsoom", size: 10 }, //Kohsoom 
-  { x: 400, y: 160, group: "Boonsri", size: 10 }, //Boonsri
-  { x: 320, y: 260, group: "Achara", size: 10 }, //Achara 
-  { x: 250, y: 350, group: "Somchair", size: 10 }, //Somchair 
-  { x: 250, y: 510, group: "Tansanee", size: 10 }, // Sakda
-  { x: 400, y: 640, group: "Sakda", size: 10 }, //Sakda 
+//These are placement sensitive
+var markers = [ 
+{ x: 250, y: 510, group: "Tansanee", size: 1 }, // Tansanee
+{ x: 250, y: 350, group: "Somchair", size: 1 }, //Somchair 
+{ x: 400, y: 640, group: "Sakda", size: 1 }, //Sakda
+{ x: 555, y: 250, group: "Kohsoom", size: 1 }, //Kohsoom 
+{ x: 500, y: 535, group: "Kannika", size: 1 }, //Kannika
+{ x: 110, y: 440, group: "Decha", size: 1 }, // Decha
+{ x: 465, y: 370, group: "Chai", size: 1 }, //Chai
+{ x: 555, y: 320, group: "Busarakhan", size: 1 }, //Busarakhan 
+{ x: 400, y: 160, group: "Boonsri", size: 1 }, //Boonsri
+{ x: 320, y: 260, group: "Achara", size: 1 }, //Achara 
 ];
 
 
+
+// Adjusted dimensions to show the map
 var scaleFactor = 1.5;
-// Adjusted dimensions
 var width = originalWidth * scaleFactor,
     height = originalHeight * scaleFactor;
 
@@ -34,7 +36,7 @@ var width = originalWidth * scaleFactor,
 svg.attr("width", width)
     .attr("height", height);
 
-// Assuming your data has a 'size' property that determines the circle size
+// Determines the circle size
 var sizeDomain = d3.extent(markers, function(d) { return d.size; });
 
 // Add a scale for bubble size
@@ -109,23 +111,7 @@ function createMonthSlider(months) {
       });
 }
 
-// Function to create a slider
-// function createSlider() {
-//   var sliderContainer = d3.select("#slider-container");
-//   var slider = sliderContainer.append("input")
-//     .attr("type", "range")
-//     .attr("min", 1)
-//     .attr("max", 12)
-//     .attr("value", 1)
-//     .on("input", function() {
-//         // Handle slider input event
-//         updateVisualization(data);
-//     });
 
-// // Add labels for the slider
-// sliderContainer.append("label")
-//     .text("Month:");
-//   }
 
  // Function to update visualization based on selected year and month
 function updateVisualization(selectedYear, selectedMonth) {
@@ -139,8 +125,8 @@ function updateVisualization(selectedYear, selectedMonth) {
 
    // Filter data based on selected year and month
    var filteredData = parsedData.filter(function (d) {
-    return d.year_of_sample_date === selectedYear && d.month_of_sample_date === selectedMonthName &&
-        d.x !== null && d.y !== null && d.value !== null;  // Add additional conditions as needed
+    return d.year_of_sample_date === selectedYear && d.month_of_sample_date === selectedMonthName //&&
+        //d.x !== null && d.y !== null && d.value !== null;  // Add additional conditions as needed
 });
 
 
@@ -158,7 +144,7 @@ function updateVisualization(selectedYear, selectedMonth) {
 // Add or update circles
 var circles = svg.selectAll("circle")
     .data(filteredData, function(d, i) { 
-      return i !== null && i !== undefined ? i : d.group;
+      return i !== null && i !== undefined ? i : d.group
     });
     
 
@@ -169,14 +155,15 @@ var circles = svg.selectAll("circle")
     .merge(circles)
     .transition()
     .duration(1000)
-    .attr("r", function(d) {
-      var sizeValue = sizeScale(d.value);
-      return isNaN(sizeValue) ? 0 : sizeValue;
-  })  // Use sizeScale for the bubble size
+    .attr("r", function (d) { 
+      console.log("Circle Size:", d.location ,sizeScale(d.value));
+      return sizeScale(d.value); 
+    })  // Use sizeScale for the bubble size
     .style("fill", function (d) { return color(d.group); });
 
-//circles.exit().remove();
+    
 
+circles.exit().remove();
 
 }
 

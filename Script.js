@@ -42,16 +42,16 @@ var sizeDomain = d3.extent(markers, function(d) { return d.size; });
 // Add a scale for bubble size
 var sizeScale = d3.scaleLinear()
     .domain(sizeDomain)  // Adjust based on your data
-    .range([4, 50]);  // Size in pixels, adjust the range based on your desired size range
+    .range([0, 50]);  // Size in pixels, adjust the range based on your desired size range
 
 
-console.log(parsedData);
+//console.log(parsedData);
 
 //testing
-var chaiData = parsedData.filter(function(d) {
-  return d.location === "Chai";
-});
-console.log("Data for locations named 'Chai':", chaiData);
+// var chaiData = parsedData.filter(function(d) {
+//   return d.location === "Chai";
+// });
+// console.log("Data for locations named 'Chai':", chaiData);
 
 var uniqueYears = [...new Set(parsedData.map(d => d.year_of_sample_date))];
 var uniqueMonths = [...new Set(parsedData.map(d => d.month_of_sample_date))];
@@ -96,7 +96,8 @@ function createRadioButtons(years) {
 // Function to create a slider
 function createMonthSlider(months) {
   var sliderContainer = d3.select("#slider-container");
-
+  //console.log("Selected Month (Number) I AM WORKIN @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@G:");
+  
   sliderContainer.select("#month-slider")
       .on("input", function() {
           // Handle month slider input event
@@ -105,13 +106,12 @@ function createMonthSlider(months) {
 
           // Update the displayed month 
           sliderContainer.select("#selected-month").text(selectedMonthName);
+          
 
           // Continue with the updateVisualization function or any other actions
           updateVisualization(parsedData);
       });
 }
-
-
 
  // Function to update visualization based on selected year and month
 function updateVisualization(selectedYear, selectedMonth) {
@@ -129,8 +129,6 @@ function updateVisualization(selectedYear, selectedMonth) {
         //d.x !== null && d.y !== null && d.value !== null;  // Add additional conditions as needed
 });
 
-
-
    console.log("Filtered Data:", filteredData);
   //console.log("Filtered Data By Location:", filteredDataByLocation);
 
@@ -138,9 +136,6 @@ function updateVisualization(selectedYear, selectedMonth) {
  // Update circle sizes based on the 'measure value' for the selected data subset
  sizeScale.domain([0, d3.max(filteredData, function (d) { return d.value; })]);
 
- 
-
-//HAVING TROUBLE WITH THIS PART ~~~~~~
 // Add or update circles
 var circles = svg.selectAll("circle")
     .data(filteredData, function(d, i) { 
@@ -160,24 +155,22 @@ var circles = svg.selectAll("circle")
       return sizeScale(d.value); 
     })  // Use sizeScale for the bubble size
     .style("fill", function (d) { return color(d.group); });
-
-    
-
 circles.exit().remove();
-
 }
 
 
-// Assuming you have a function to initialize the visualization
+
+// Initialize the visualization
 function initializeVisualization() {
   // Your initialization code here
 }
 
-createMonthSlider([...new Set(parsedData.map(d => d.month_of_sample_date))]);
+//createMonthSlider([...new Set(parsedData.map(d => d.month_of_sample_date))]);
 
 // Event listener for radio buttons
 d3.selectAll("input[name='year']").on("change", function () {
-  var selectedYear = +this.value; // Convert to number
+  var selectedYear = +this.value; // Update the selectedYear variable
+
   var selectedMonth = +d3.select("#month-slider").property("value"); // Get selected month from the slider
 
   updateVisualization(selectedYear, selectedMonth);
@@ -185,11 +178,12 @@ d3.selectAll("input[name='year']").on("change", function () {
 
 // Event listener for the initial setup
 d3.select("#month-slider").on("input", function () {
-  var selectedYear = +d3.select("input[name='year']:checked").node().value; // Get selected year from radio buttons
+  var selectedYear = +d3.select("input[name='year']:checked").node().value; // Convert to number
   var selectedMonth = +this.value; // Get selected month from the slider
 
   updateVisualization(selectedYear, selectedMonth);
 });
+
 
 // Initialize the visualization
 initializeVisualization();

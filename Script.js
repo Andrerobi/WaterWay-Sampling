@@ -165,7 +165,6 @@ function initializeVisualization() {
   // Your initialization code here
 }
 
-//createMonthSlider([...new Set(parsedData.map(d => d.month_of_sample_date))]);
 
 // Event listener for radio buttons
 d3.selectAll("input[name='year']").on("change", function () {
@@ -191,20 +190,11 @@ initializeVisualization();
 // Load external data and boot
 d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson", function(data){
 
-    // Filter data
-    data.features = data.features.filter( function(d){return d.properties.name=="WaterWay"} )
-
-    
-
-    // // Create a color scale
-    // var color = d3.scaleOrdinal()
-    //   .domain(["Decha", "Kannika", "Chai", "Busarakhan", "Kohsoom", "Boonsri", "Achara", "Somchair", "Tansanee", "Sakda" ])
-    //   .range([ "#402D54", "#D18975", "#8FD175", "#FFEE8D", "#D175D1", "#D1A275", "#D1D175", "#D1758F", "#75D1D1", "#D1758F"])
 
     // Add a scale for bubble size
     var size = d3.scaleLinear()
       .domain([1,100])  // What's in the data
-      .range([ 4, 50])  // Size in pixel
+      .range([ 1, 50])  // Size in pixel
     
   
     // Add the background image from current directory
@@ -213,7 +203,6 @@ d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/w
     .attr("width", width) //Scaling
     .attr("height", height) //Scaling
    
-
 
     // Add circles:
     svg.selectAll("myCircles")
@@ -237,27 +226,6 @@ d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/w
     .attr("stroke", function (d) { return color(d.group); })
     .attr("stroke-width", 3)
     .attr("fill-opacity", .4);
-  
-
-
-    // This function is gonna change the opacity and size of selected and unselected circles
-    function update(){
-
-      // For each check box:
-      d3.selectAll(".checkbox").each(function(d){
-        cb = d3.select(this);
-        grp = cb.property("value")
-
-        // If the box is check, I show the group
-        if(cb.property("checked")){
-          svg.selectAll("."+grp).transition().duration(1000).style("opacity", 1).attr("r", function(d){ return size(d.size) })
-
-        // Otherwise I hide it
-        }else{
-          svg.selectAll("."+grp).transition().duration(1000).style("opacity", 0).attr("r", 0)
-        }
-      })
-    }
 
     // When a button change, I run the update function
     d3.selectAll(".checkbox").on("change",update);
